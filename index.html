@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Local Mart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f5f5f5;
+    }
+
+    header {
+      background: #2e7d32;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .section {
+      display: none;
+      padding: 20px;
+    }
+
+    .show {
+      display: block;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .product {
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .product img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .qty {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 5px;
+    }
+
+    .qty button {
+      width: 30px;
+      height: 30px;
+    }
+
+    .qty span {
+      margin: 0 10px;
+      font-size: 18px;
+    }
+
+    button {
+      background: #388e3c;
+      color: white;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    input, textarea {
+      width: 100%;
+      margin: 5px 0;
+      padding: 8px;
+    }
+
+    .cart-box {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h2>Local Mart</h2>
+  <div onclick="openPage('cart')">
+    🛒 Cart (<span id="count">0</span>)
+  </div>
+</header>
+
+<!-- HOME -->
+<div id="home" class="section show">
+  <h3>Products</h3>
+
+  <div class="products">
+
+    <!-- PRODUCT -->
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c">
+      <h4>Rice</h4>
+      ₹120
+
+      <div class="qty">
+        <button onclick="changeQty('q1', -1)">-</button>
+        <span id="q1">1</span>
+        <button onclick="changeQty('q1', 1)">+</button>
+      </div>
+
+      <button onclick="addItem('Rice',120,'q1')">Add</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1563636619-e9143da7973b">
+      <h4>Milk</h4>
+      ₹30
+
+      <div class="qty">
+        <button onclick="changeQty('q2', -1)">-</button>
+        <span id="q2">1</span>
+        <button onclick="changeQty('q2', 1)">+</button>
+      </div>
+
+      <button onclick="addItem('Milk',30,'q2')">Add</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1592032857148-8d6e8a4c5aef">
+      <h4>Dal</h4>
+      ₹110
+
+      <div class="qty">
+        <button onclick="changeQty('q3', -1)">-</button>
+        <span id="q3">1</span>
+        <button onclick="changeQty('q3', 1)">+</button>
+      </div>
+
+      <button onclick="addItem('Dal',110,'q3')">Add</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5">
+      <h4>Oil</h4>
+      ₹160
+
+      <div class="qty">
+        <button onclick="changeQty('q4', -1)">-</button>
+        <span id="q4">1</span>
+        <button onclick="changeQty('q4', 1)">+</button>
+      </div>
+
+      <button onclick="addItem('Oil',160,'q4')">Add</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655">
+      <h4>Potato</h4>
+      ₹20
+
+      <div class="qty">
+        <button onclick="changeQty('q5', -1)">-</button>
+        <span id="q5">1</span>
+        <button onclick="changeQty('q5', 1)">+</button>
+      </div>
+
+      <button onclick="addItem('Potato',20,'q5')">Add</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1561136594-7f68413baa99">
+      <h4>Tomato</h4>
+      ₹25
+
+      <div class="qty">
+        <button onclick="changeQty('q6', -1)">-</button>
+        <span id="q6">1</span>
+        <button onclick="changeQty('q6', 1)">+</button>
+      </div>
+
+      <button onclick="addItem('Tomato',25,'q6')">Add</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- CART -->
+<div id="cart" class="section">
+  <div class="cart-box">
+    <h3>Your Cart</h3>
+    <div id="cartItems"></div>
+    <h4>Total: ₹<span id="total">0</span></h4>
+
+    <button onclick="openPage('checkout')">Checkout</button>
+  </div>
+</div>
+
+<!-- CHECKOUT -->
+<div id="checkout" class="section">
+  <div class="cart-box">
+    <h3>Enter Details</h3>
+
+    <input placeholder="Name">
+    <input placeholder="Phone">
+    <textarea placeholder="Address"></textarea>
+
+    <button onclick="placeOrder()">Place Order</button>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div id="success" class="section">
+  <h2>✅ Order Placed Successfully</h2>
+</div>
+
+<script>
+
+let cart = [];
+
+// PAGE SWITCH
+function openPage(id) {
+  let all = document.getElementsByClassName("section");
+  for (let i = 0; i < all.length; i++) {
+    all[i].style.display = "none";
+  }
+  document.getElementById(id).style.display = "block";
+}
+
+// QUANTITY CHANGE
+function changeQty(id, change) {
+  let el = document.getElementById(id);
+  let value = parseInt(el.innerText);
+
+  value = value + change;
+
+  if (value < 1) value = 1;
+
+  el.innerText = value;
+}
+
+// ADD ITEM
+function addItem(name, price, id) {
+  let qty = parseInt(document.getElementById(id).innerText);
+
+  cart.push({
+    name: name,
+    price: price,
+    qty: qty
+  });
+
+  updateCart();
+}
+
+// UPDATE CART
+function updateCart() {
+  let list = "";
+  let total = 0;
+
+  for (let i = 0; i < cart.length; i++) {
+    let item = cart[i];
+    total += item.price * item.qty;
+
+    list += item.name + " x " + item.qty + "<br>";
+  }
+
+  document.getElementById("cartItems").innerHTML = list;
+  document.getElementById("total").innerText = total;
+  document.getElementById("count").innerText = cart.length;
+}
+
+// PLACE ORDER
+function placeOrder() {
+  cart = [];
+  updateCart();
+  openPage("success");
+}
+
+</script>
+
+</body>
+</html>
